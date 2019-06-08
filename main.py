@@ -15,6 +15,8 @@ class Game():
         self.screen = pg.display.set_mode((WIDTH + TF_WIDTH, HEIGHT), pg.SRCALPHA, 32)
         self.clock = pg.time.Clock()
         pg.display.set_caption(TITLE)
+        icon = pg.image.load(IMAGE_FILE_DICT["wR"])
+        pg.display.set_icon(icon)
         self.load_data()
         self.engine = ChessEngine()
         self.AI = ChessAI(4)

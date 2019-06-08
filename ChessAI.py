@@ -8,7 +8,7 @@ class ChessAI():
     
     def search(self, board, alfa, beta, is_maximizer=True, depth=0, is_root=True, N_C = [0, 0]):
         """
-        returns a tuple called results = (start_pos, end_pos, score, visited_nodes)
+            returns a tuple containing: (start_pos, end_pos, score, visited_nodes)
         """
         # Beta is the minimizing players value
         # alfa is the maximizing player value.
@@ -48,7 +48,3 @@ class ChessAI():
                         return best_score
             return best_score
             
-
-
-
-

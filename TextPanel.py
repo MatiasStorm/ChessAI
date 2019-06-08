@@ -1,7 +1,7 @@
 import pygame as pg
 from Settings import *
 
-class TextField():
+class TextPanel():
     def __init__(self):
         self.surface = pg.Surface((TF_WIDTH - MARGIN, TF_HEIGHT - MARGIN * 2))
         self.font_size = 15

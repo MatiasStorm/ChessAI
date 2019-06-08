@@ -1,11 +1,11 @@
 import pygame as pg
 import sys
 from Settings import *
-from Board import Board
+from BoardCanvas import BoardCanvas
 from math import floor
 from ChessEngine import ChessEngine
 from ChessAI import ChessAI
-from TextField import TextField
+from TextPanel import TextPanel
 
 vector = pg.math.Vector2
 
@@ -19,7 +19,6 @@ class Game():
         self.engine = ChessEngine()
         self.AI = ChessAI(4)
         
-        
     def load_data(self):
         self.image_dict = {}
         for name in IMAGE_FILE_DICT:
@@ -30,10 +29,10 @@ class Game():
     def new(self):
         self.piece_matrix = [x[:] for x in STARTING_PIECE_MATRIX]
         self.start_pos = ()
-        self.board = Board(self)
+        self.board_canvas = BoardCanvas(self)
         self.screen.fill(MAHOGANY)
-        self.board.draw()
-        self.text_field = TextField()
+        self.board_canvas.draw()
+        self.text_panel = TextPanel()
         self.checked = ""
         self.computer_turn = False
     
@@ -50,8 +49,8 @@ class Game():
         move = self.AI.search(self.piece_matrix, -sys.maxsize, sys.maxsize)
         piece = self.piece_matrix[move[0][0]][move[0][1]]
         self.move_piece(move[0], move[1], 'C')
-        text = "Computer moved " + CHAR_TO_STR[piece[1]] +" to " + BOARD_CHARS[move[1][1]] +  str(7 - move[1][0] + 1) + ". Score: " + str(move[2]) + ". Nodes: " + str(move[3][0]) + " CutOffs: " + str(move[3][1])
-        self.text_field.write(text)
+        text = "Computer moved " + CHAR_TO_STR[piece[1]] +" to " + BOARD_CANVAS_CHARS[move[1][1]] +  str(7 - move[1][0] + 1) + ". Score: " + str(move[2]) + ". Nodes: " + str(move[3][0]) + " CutOffs: " + str(move[3][1])
+        self.text_panel.write(text)
     
     def animate_movement(self, start_tile, end_tile, piece):
         current_pos = vector(start_tile[1] * TILESIZE + MARGIN, start_tile[0] * TILESIZE + MARGIN)
@@ -77,8 +76,8 @@ class Game():
             self.checked = ""
             self.computer_turn = not self.computer_turn
             if mover == "P":
-                text = "Player moved " + CHAR_TO_STR[piece[1]] +" to " + BOARD_CHARS[end_tile[1]] +  str(7 - end_tile[0] + 1)
-                self.text_field.write(text)
+                text = "Player moved " + CHAR_TO_STR[piece[1]] +" to " + BOARD_CANVAS_CHARS[end_tile[1]] +  str(7 - end_tile[0] + 1)
+                self.text_panel.write(text)
                 self.check_mate('b')
             else:
                 self.check_mate('w')
@@ -92,13 +91,13 @@ class Game():
     def check_mate(self, color):
         if self.engine.check(self.piece_matrix, color):
             if self.engine.check_mate(self.piece_matrix, color):
-                self.text_field.write("Check-mate!", RED if color == 'w' else GREEN)
+                self.text_panel.write("Check-mate!", RED if color == 'w' else GREEN)
                 self.GO_screen(color)
             else:
-                self.text_field.write("Check!", RED if color == 'w' else GREEN)
+                self.text_panel.write("Check!", RED if color == 'w' else GREEN)
                 self.checked = color
     
-    def get_mouse_pos_rc(self): # Returns the mouse positions tranlated into row and column of the board
+    def get_mouse_pos_rc(self): # Returns the mouse positions tranlated into rows and columns of the board
         pos = pg.mouse.get_pos()
         col = floor((pos[0] - MARGIN) / TILESIZE)
         row = floor((pos[1] - MARGIN) / TILESIZE)
@@ -131,7 +130,7 @@ class Game():
             
     def draw(self):
         self.screen.fill(MAHOGANY)
-        self.board.draw()
+        self.board_canvas.draw()
         # Drawing pieces:
         for row_index, row in enumerate(self.piece_matrix):
             for col_index, piece in enumerate(row):
@@ -157,7 +156,7 @@ class Game():
             self.show_allowed_moves(self.get_mouse_pos_rc())
         
         # Text field:
-        self.screen.blit(self.text_field.surface, (WIDTH, MARGIN))
+        self.screen.blit(self.text_panel.surface, (WIDTH, MARGIN))
         
         pg.display.update()
     
@@ -210,60 +209,6 @@ if __name__ == "__main__":
         game.run()
         print("new game")
     pg.quit()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

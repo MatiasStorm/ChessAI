@@ -9,55 +9,99 @@ class ChessEngine():
     def __get_pawn_moves(self, board, pos, color):
         moves_dict = {}
         moves_dict["M"] = [] # M for moves   
-        moves_dict["P"] = [] # P for protect
-        moves_dict["K"] = []
-        if color == "w":
-            if pos[0] - 1 >= 0:
-                if board[pos[0] - 1][pos[1]] == "..":
-                    moves_dict["M"].append((pos[0] - 1, pos[1]))
-                if pos[1] < 7:
-                    if 'b' in board[pos[0] - 1][pos[1] + 1]: # Right diagonal
-                        moves_dict["M"].append((pos[0] - 1, pos[1] + 1))
-                        moves_dict["K"].append((pos[0] - 1, pos[1] + 1))
-                    elif color in board[pos[0] - 1][pos[1] + 1]:
-                        moves_dict["P"].append((pos[0] - 1, pos[1] + 1))
-                    else:
-                        moves_dict["K"].append((pos[0] - 1, pos[1] + 1))
-                if pos[1] > 0:
-                    if 'b' in board[pos[0] - 1][pos[1] - 1]: # Left diagonal,
-                        moves_dict["M"].append((pos[0] - 1, pos[1] - 1))
-                        moves_dict["K"].append((pos[0] - 1, pos[1] - 1))
-                    elif color in board[pos[0] - 1][pos[1] - 1]: # Left diagonal
-                        moves_dict["P"].append((pos[0] - 1, pos[1] - 1))
-                    else:
-                        moves_dict["K"].append((pos[0] - 1, pos[1] - 1))
-                    
-            if pos[0] == 6 and board[pos[0] - 2][pos[1]] == ".." and board[pos[0]-1][pos[1]] == "..": # If pawn is at start position it can move to places.
-                moves_dict["M"].append((pos[0] - 2, pos[1]))
-            
+        moves_dict["P"] = [] # P for protect, can protect a piece so the king cannot seize it
+        moves_dict["K"] = [] # K, places where the oppsite king cannot move to (only used when finding the kings allowed moves)
         
+        if color == "w":
+            direction = -1;
+            final_row = 0;
+            start_row = 6;
+            opp_col = "b";
         elif color == "b":
-            if pos[0] + 1 <= 7:
-                if board[pos[0] + 1][pos[1]] == "..":
-                    moves_dict["M"].append((pos[0] + 1, pos[1]))
-                if pos[1] < 7:
-                    if 'w' in board[pos[0] + 1][pos[1] + 1]: # Left diagonal
-                        moves_dict["M"].append((pos[0] + 1, pos[1] + 1))
-                        moves_dict["K"].append((pos[0] + 1, pos[1] + 1))
-                    elif color in board[pos[0] + 1][pos[1] + 1]:
-                        moves_dict["P"].append((pos[0] + 1, pos[1] + 1))
-                    else:
-                        moves_dict["K"].append((pos[0] + 1, pos[1] + 1))
-                if pos[1] > 0:
-                    if 'w' in board[pos[0] + 1][pos[1] - 1]: # Right diagonal
-                        moves_dict["M"].append((pos[0] + 1, pos[1] - 1))
-                        moves_dict["K"].append((pos[0] + 1, pos[1] - 1))
-                    elif color in board[pos[0] + 1][pos[1] - 1]: # Right diagonal
-                        moves_dict["P"].append((pos[0] + 1, pos[1] - 1))
-                    else:
-                        moves_dict["K"].append((pos[0] + 1, pos[1] - 1))
-            if pos[0] == 1 and board[pos[0] + 2][pos[1]] == ".." and board[pos[0]+1][pos[1]] == "..": 
-                moves_dict["M"].append((pos[0] + 2, pos[1]))
+            direction = 1;
+            final_row = 7;
+            start_row = 1;
+            opp_col = "w";
+            
+        row = pos[0];
+        col = pos[1];
+        if 0 < row < 7: # Pawn cannot move if it is in the top or bottom of the board.
+            if board[row + direction][col] == "..": # Strait ahead
+                moves_dict["M"].append((row + direction, col))
+            if pos[1] < 7:
+                if opp_col in board[row + direction][col + 1]: # Right diagonal
+                    moves_dict["M"].append((row + direction, col + 1))
+                    # moves_dict["K"].append((pos[0] + direction, pos[1] + 1))
+                elif color in board[row + direction][col + 1]:
+                    moves_dict["P"].append((row + direction, col + 1))
+                else:
+                    moves_dict["K"].append((row + direction, col + 1))
+            if pos[1] > 0:
+                if opp_col in board[row + direction][col - 1]: # Left diagonal,
+                    moves_dict["M"].append((row + direction, col - 1))
+                    # moves_dict["K"].append((pos[0] + direction, pos[1] - 1))
+                elif color in board[row - 1][col - 1]: # Left diagonal
+                    moves_dict["P"].append((row + direction, col - 1))
+                else:
+                    moves_dict["K"].append((row + direction, col - 1))
+                
+        if row == start_row: # If pawn is at start position it can move two places.
+            if board[row + (2 * direction)][col] == ".." and board[row + direction][col] == "..": 
+                moves_dict["M"].append((row + (2 * direction), col))
+        
+        
+        
+        
+        
+    ##################################################################    
+    
+        # if color == "w": # White pawn
+        #     if pos[0] - 1 >= 0: # Pawn cannot move if it is in the top of the board.
+        #         if board[pos[0] - 1][pos[1]] == "..": # Strait ahead
+        #             moves_dict["M"].append((pos[0] - 1, pos[1]))
+        #         if pos[1] < 7:
+        #             if 'b' in board[pos[0] - 1][pos[1] + 1]: # Right diagonal
+        #                 moves_dict["M"].append((pos[0] - 1, pos[1] + 1))
+        #                 moves_dict["K"].append((pos[0] - 1, pos[1] + 1))
+        #             elif color in board[pos[0] - 1][pos[1] + 1]:
+        #                 moves_dict["P"].append((pos[0] - 1, pos[1] + 1))
+        #             else:
+        #                 moves_dict["K"].append((pos[0] - 1, pos[1] + 1))
+        #         if pos[1] > 0:
+        #             if 'b' in board[pos[0] - 1][pos[1] - 1]: # Left diagonal,
+        #                 moves_dict["M"].append((pos[0] - 1, pos[1] - 1))
+        #                 moves_dict["K"].append((pos[0] - 1, pos[1] - 1))
+        #             elif color in board[pos[0] - 1][pos[1] - 1]: # Left diagonal
+        #                 moves_dict["P"].append((pos[0] - 1, pos[1] - 1))
+        #             else:
+        #                 moves_dict["K"].append((pos[0] - 1, pos[1] - 1))
+        # 
+        #     if pos[0] == 6 and board[pos[0] - 2][pos[1]] == ".." and board[pos[0]-1][pos[1]] == "..": # If pawn is at start position it can move two places.
+        #         moves_dict["M"].append((pos[0] - 2, pos[1]))
+        # 
+        # 
+        # elif color == "b": # Black pawn
+        #     if pos[0] + 1 <= 7: # Pawn cannot move if it is as the bottom of the board.
+        #         if board[pos[0] + 1][pos[1]] == "..":
+        #             moves_dict["M"].append((pos[0] + 1, pos[1]))
+        #         if pos[1] < 7:
+        #             if 'w' in board[pos[0] + 1][pos[1] + 1]: # Left diagonal
+        #                 moves_dict["M"].append((pos[0] + 1, pos[1] + 1))
+        #                 moves_dict["K"].append((pos[0] + 1, pos[1] + 1))
+        #             elif color in board[pos[0] + 1][pos[1] + 1]:
+        #                 moves_dict["P"].append((pos[0] + 1, pos[1] + 1))
+        #             else:
+        #                 moves_dict["K"].append((pos[0] + 1, pos[1] + 1))
+        #         if pos[1] > 0:
+        #             if 'w' in board[pos[0] + 1][pos[1] - 1]: # Right diagonal
+        #                 moves_dict["M"].append((pos[0] + 1, pos[1] - 1))
+        #                 moves_dict["K"].append((pos[0] + 1, pos[1] - 1))
+        #             elif color in board[pos[0] + 1][pos[1] - 1]: # Right diagonal
+        #                 moves_dict["P"].append((pos[0] + 1, pos[1] - 1))
+        #             else:
+        #                 moves_dict["K"].append((pos[0] + 1, pos[1] - 1))
+        #     if pos[0] == 1 and board[pos[0] + 2][pos[1]] == ".." and board[pos[0]+1][pos[1]] == "..": 
+        #         moves_dict["M"].append((pos[0] + 2, pos[1]))
         return moves_dict
     
     def __get_knight_moves(self, board, pos, color):
@@ -78,7 +122,7 @@ class ChessEngine():
     def __get_directed_moves(self, board, pos, color, row_change, col_change):
         """
         Return all allowed moves in the direction specified by row_change and col_change, from pos.
-        The first occurence of a piece of a different color on the directed path is also added to the allowed moves.
+        The first occurence of a different colored piece on the directed path is also added to the allowed moves.
         """
         moves_dict = {}
         moves_dict["M"] = []
@@ -162,16 +206,19 @@ class ChessEngine():
     def is_move_allowed(self, board, start_pos, end_pos):
         return end_pos in self.get_allowed_moves(board, start_pos)["M"]
         
-
     def get_allowed_moves(self, board, pos):
         """
         returns a list of tuples [(end_row, end_col),...]
         """
         piece = board[pos[0]][pos[1]]
         if piece != "..":
-            return (self.get_moves_dict[piece[1]](board, pos, piece[0]))
+            color = piece[0]
+            return (self.get_moves_dict[piece[1]](board, pos, color))
     
     def get_all_moves_list(self, board, color):
+        """
+            Returns a list of all allowed moves of the given color.
+        """
         all_moves = []
         for r in range(len(board)):
             for c in range(len(board[r])):
@@ -188,7 +235,11 @@ class ChessEngine():
     
     def get_all_moves_dict(self, board, color):
         """
-        Returns a dict with the pos as key and a list of tuples of all possible moves as the value: {(start_row, start_col):[(end_row1, end_col1),...],...}
+            Finds all allowed moves of the given color.
+            Returns a dictonary:
+                {(start_row, start_col):[(end_row1, end_col1),...],...}
+                Key: The position of the piece
+                Value: List of tuples (row, col) of all the allowed moves.
         """
         moves_dict = {}
         for r in range(len(board)):
@@ -247,18 +298,19 @@ class ChessEngine():
     def print_board(self, b):
         for row in b:
             print(row)
-# 
-# b = [["wK", "..", "bB", "bQ", "bK", "bB", "bH", "bR"],
-#      ["..", "..", "bP", "bP", "bP", "bP", "bP", "bP"],
-#      ["..", "bQ", "..", "..", "..", "..", "..", ".."],
+            
+
+
+# Debuggin code            
+# b = [["wP", "..", "bB", "bQ", "bK", "bB", "bH", "bR"],
+#      ["..", "wP", "bP", "bP", "..", "bP", "bP", "bP"],
+#      ["..", "wP", "..", "wP", "..", "..", "..", ".."],
 #      ["..", "..", "..", "..", "..", "..", "..", ".."],
 #      ["bR", "..", "..", "..", "..", "..", "..", ".."],
 #      ["..", "..", "..", "..", "..", "..", "..", ".."],
 #      ["wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP"],
-#      ["wR", "wH", "wB", "wQ", "..", "wB", "wH", "wR"]]
+#      ["bP", "wH", "wB", "wQ", "..", "wB", "wH", "wR"]]
 # e = ChessEngine()
-# print(e.check_mate(b, 'w'))
-
-
-
+# print(e.get_allowed_moves(b, (1,1)))
+# print(e.get_allowed_moves(b, (7,0)))
 

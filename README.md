@@ -18,4 +18,4 @@ I have also implemented my own chess engine, which handles all the rules of the 
 - How the minimax algorithm works.
 
 
-![Screenshot](Images/game_img.png)
+![Screenshot](Images/game_img.png "What the game looks like")

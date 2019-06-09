@@ -209,7 +209,6 @@ if __name__ == "__main__":
     while True:
         game.new()
         game.run()
-        print("new game")
     pg.quit()
 
 

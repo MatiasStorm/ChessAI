@@ -4,6 +4,7 @@ Implementation of a chess game using the PyGame module.
 
 The game only allows for single player mode, playing against a simple AI. The AI uses the minimax algorithm to search for the best move.
 I have also implemented my own chess engine, which handles all the rules of the game.
+The game also includes a text panel which shows some useful information about which pieces is moved to where and how the minimax algorithm ran at that particular move.
 
 ## Controls:
 - Hover over piece to show allowed moves.

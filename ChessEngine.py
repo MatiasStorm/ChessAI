@@ -31,7 +31,6 @@ class ChessEngine():
             if pos[1] < 7:
                 if opp_col in board[row + direction][col + 1]: # Right diagonal
                     moves_dict["M"].append((row + direction, col + 1))
-                    # moves_dict["K"].append((pos[0] + direction, pos[1] + 1))
                 elif color in board[row + direction][col + 1]:
                     moves_dict["P"].append((row + direction, col + 1))
                 else:
@@ -39,69 +38,15 @@ class ChessEngine():
             if pos[1] > 0:
                 if opp_col in board[row + direction][col - 1]: # Left diagonal,
                     moves_dict["M"].append((row + direction, col - 1))
-                    # moves_dict["K"].append((pos[0] + direction, pos[1] - 1))
                 elif color in board[row - 1][col - 1]: # Left diagonal
                     moves_dict["P"].append((row + direction, col - 1))
                 else:
                     moves_dict["K"].append((row + direction, col - 1))
                 
-        if row == start_row: # If pawn is at start position it can move two places.
+        if row == start_row: # If pawn is at start position it can move two steps ahead.
             if board[row + (2 * direction)][col] == ".." and board[row + direction][col] == "..": 
                 moves_dict["M"].append((row + (2 * direction), col))
-        
-        
-        
-        
-        
-    ##################################################################    
-    
-        # if color == "w": # White pawn
-        #     if pos[0] - 1 >= 0: # Pawn cannot move if it is in the top of the board.
-        #         if board[pos[0] - 1][pos[1]] == "..": # Strait ahead
-        #             moves_dict["M"].append((pos[0] - 1, pos[1]))
-        #         if pos[1] < 7:
-        #             if 'b' in board[pos[0] - 1][pos[1] + 1]: # Right diagonal
-        #                 moves_dict["M"].append((pos[0] - 1, pos[1] + 1))
-        #                 moves_dict["K"].append((pos[0] - 1, pos[1] + 1))
-        #             elif color in board[pos[0] - 1][pos[1] + 1]:
-        #                 moves_dict["P"].append((pos[0] - 1, pos[1] + 1))
-        #             else:
-        #                 moves_dict["K"].append((pos[0] - 1, pos[1] + 1))
-        #         if pos[1] > 0:
-        #             if 'b' in board[pos[0] - 1][pos[1] - 1]: # Left diagonal,
-        #                 moves_dict["M"].append((pos[0] - 1, pos[1] - 1))
-        #                 moves_dict["K"].append((pos[0] - 1, pos[1] - 1))
-        #             elif color in board[pos[0] - 1][pos[1] - 1]: # Left diagonal
-        #                 moves_dict["P"].append((pos[0] - 1, pos[1] - 1))
-        #             else:
-        #                 moves_dict["K"].append((pos[0] - 1, pos[1] - 1))
-        # 
-        #     if pos[0] == 6 and board[pos[0] - 2][pos[1]] == ".." and board[pos[0]-1][pos[1]] == "..": # If pawn is at start position it can move two places.
-        #         moves_dict["M"].append((pos[0] - 2, pos[1]))
-        # 
-        # 
-        # elif color == "b": # Black pawn
-        #     if pos[0] + 1 <= 7: # Pawn cannot move if it is as the bottom of the board.
-        #         if board[pos[0] + 1][pos[1]] == "..":
-        #             moves_dict["M"].append((pos[0] + 1, pos[1]))
-        #         if pos[1] < 7:
-        #             if 'w' in board[pos[0] + 1][pos[1] + 1]: # Left diagonal
-        #                 moves_dict["M"].append((pos[0] + 1, pos[1] + 1))
-        #                 moves_dict["K"].append((pos[0] + 1, pos[1] + 1))
-        #             elif color in board[pos[0] + 1][pos[1] + 1]:
-        #                 moves_dict["P"].append((pos[0] + 1, pos[1] + 1))
-        #             else:
-        #                 moves_dict["K"].append((pos[0] + 1, pos[1] + 1))
-        #         if pos[1] > 0:
-        #             if 'w' in board[pos[0] + 1][pos[1] - 1]: # Right diagonal
-        #                 moves_dict["M"].append((pos[0] + 1, pos[1] - 1))
-        #                 moves_dict["K"].append((pos[0] + 1, pos[1] - 1))
-        #             elif color in board[pos[0] + 1][pos[1] - 1]: # Right diagonal
-        #                 moves_dict["P"].append((pos[0] + 1, pos[1] - 1))
-        #             else:
-        #                 moves_dict["K"].append((pos[0] + 1, pos[1] - 1))
-        #     if pos[0] == 1 and board[pos[0] + 2][pos[1]] == ".." and board[pos[0]+1][pos[1]] == "..": 
-        #         moves_dict["M"].append((pos[0] + 2, pos[1]))
+                
         return moves_dict
     
     def __get_knight_moves(self, board, pos, color):

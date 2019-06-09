@@ -17,3 +17,5 @@ I have also implemented my own chess engine, which handles all the rules of the 
 - How to implement a game engine.
 - How the minimax algorithm works.
 
+
+![Screenshot](Images/game_img.png)

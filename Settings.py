@@ -49,3 +49,5 @@ BOARD_CANVAS_CHARS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 TF_WIDTH = 600
 TF_HEIGHT = HEIGHT
 
+# AI settings:
+MAX_SEARCH_DEPTH = 4

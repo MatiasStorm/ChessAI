@@ -66,8 +66,8 @@ class ChessEngine():
     
     def __get_directed_moves(self, board, pos, color, row_change, col_change):
         """
-        Return all allowed moves in the direction specified by row_change and col_change, from pos.
-        The first occurence of a different colored piece on the directed path is also added to the allowed moves.
+            Return all allowed moves in the direction specified by row_change and col_change, from pos.
+            The first occurence of a different colored piece on the directed path is also added to the allowed moves.
         """
         moves_dict = {}
         moves_dict["M"] = []
@@ -153,7 +153,7 @@ class ChessEngine():
         
     def get_allowed_moves(self, board, pos):
         """
-        returns a list of tuples [(end_row, end_col),...]
+            returns a list of tuples [(end_row, end_col),...]
         """
         piece = board[pos[0]][pos[1]]
         if piece != "..":

@@ -4,8 +4,8 @@ class ChessAI():
     def __init__(self, max_depth):
         self.color = "b"
         self.max_depth = max_depth
-        self.engine = ChessEngine()        
-    
+        self.engine = ChessEngine()
+
     def search(self, board, alfa, beta, is_maximizer=True, depth=0, is_root=True, N_C = [0, 0]):
         """
             returns a tuple containing: (start_pos, end_pos, score, visited_nodes)
@@ -17,7 +17,7 @@ class ChessAI():
             return self.engine.board_score(board, self.color)
         elif is_maximizer:
             moves = self.engine.get_all_moves_dict(board, self.color)
-            best_score = -9999999
+            best_score = -0.1
             for start_pos in moves:
                 for end_pos in moves[start_pos]:
                     board_with_move = [row[:] for row in board]
@@ -27,7 +27,7 @@ class ChessAI():
                     if alfa >= beta:
                         N_C[1] += 1
                         return best_score
-                    if score > best_score:
+                    if best_score == -0.1 or score > best_score:
                         best_move = end_pos
                         best_score = score
                         result = (start_pos, end_pos, best_score, N_C)
@@ -36,7 +36,7 @@ class ChessAI():
             return best_score
         else:
             moves = self.engine.get_all_moves_dict(board, 'w' if self.color == 'b' else 'b')
-            best_score = 99999
+            best_score = 99999999
             for start_pos in moves:
                 for end_pos in moves[start_pos]:
                     board_with_move = [row[:] for row in board]
@@ -47,4 +47,3 @@ class ChessAI():
                         N_C[1] += 1
                         return best_score
             return best_score
-            

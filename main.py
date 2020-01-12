@@ -81,6 +81,11 @@ class Game():
             self.piece_matrix[end_tile[0]][end_tile[1]] = piece
             self.checked = ""
             self.computer_turn = not self.computer_turn
+            if "P" in piece:
+                if "w" in piece and end_tile[0] == 0:
+                    self.piece_matrix[end_tile[0]][end_tile[1]] = "wQ"
+                elif "b" in  piece and end_tile[0] == 7:
+                    self.piece_matrix[end_tile[0]][end_tile[1]] = "bQ"
             if mover == "P":
                 text = "Player moved " + \
                     CHAR_TO_STR[piece[1]] + " to " + \
